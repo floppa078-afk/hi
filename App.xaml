@@ -1,0 +1,7 @@
+<Application x:Class="DarkProcessManager.App"
+             xmlns="http://microsoft.com"
+             xmlns:x="http://microsoft.com"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+    </Application.Resources>
+</Application>
