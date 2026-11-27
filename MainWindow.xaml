@@ -163,3 +163,14 @@
                     </DockPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="Console Logs">
+                <Grid Margin="18">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBox x:Name="ConsoleTextBox" Grid.Row="0" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Background="#0D0D0D"/>
+                    <Button Grid.Row="1" Content="Clear Logs" HorizontalAlignment="Right" Margin="0,8,0,0" Click="ClearLogsButton_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
