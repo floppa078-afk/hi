@@ -1,0 +1,165 @@
+<Window x:Class="DarkProcessManager.MainWindow"
+        xmlns="http://microsoft.com"
+        xmlns:x="http://microsoft.com"
+        Title="Estonia VPN &amp; DPI Bypass"
+        Width="980" Height="720" MinWidth="780" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Background="#121212" Foreground="#F2F2F2"
+        Closing="MainWindow_Closing" StateChanged="MainWindow_StateChanged">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="CardBrush" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#00C853"/>
+        <SolidColorBrush x:Key="MutedBrush" Color="#A0A0A0"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#F2F2F2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="#F2F2F2"/>
+            <Setter Property="Background" Value="#292929"/>
+            <Setter Property="BorderBrush" Value="#404040"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="CaretBrush" Value="#00C853"/>
+            <Setter Property="Margin" Value="0,4,0,10"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#121212"/>
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="7"/>
+            <Setter Property="Margin" Value="0,4,0,10"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="#F2F2F2"/>
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="BorderBrush" Value="#484848"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="#121212"/>
+            <Setter Property="Padding" Value="15,8"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Foreground" Value="#F2F2F2"/>
+            <Setter Property="Background" Value="#171717"/>
+            <Setter Property="BorderBrush" Value="#353535"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#F2F2F2"/>
+            <Setter Property="Margin" Value="0,4,0,10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,14">
+            <StackPanel>
+                <TextBlock Text="Estonia Shield" FontSize="26" FontWeight="SemiBold"/>
+                <TextBlock Text="Hybrid DPI Bypass + Estonia Location Router" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+            <TextBlock x:Name="DataLocationText" DockPanel.Dock="Right" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" MaxWidth="380" HorizontalAlignment="Right"/>
+        </DockPanel>
+
+        <TabControl Grid.Row="1" Background="#171717" BorderBrush="#353535">
+            <!-- Вкладка 1: Главная -->
+            <TabItem Header="Dashboard">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="24" Margin="0,0,0,14">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock x:Name="StatusText" Text="Disconnected" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="SessionTimerText" Text="00:00:00" FontSize="36" FontWeight="Light" Margin="0,10,0,16" HorizontalAlignment="Center"/>
+                                <Button x:Name="StartStopButton" Content="Connect" Width="200" Height="56" FontSize="20" FontWeight="SemiBold" Background="{StaticResource AccentBrush}" Foreground="#101010" BorderThickness="0" Click="StartStopButton_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="18">
+                            <StackPanel>
+                                <TextBlock Text="Connection Mode" FontSize="16" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="ModeComboBox" SelectedIndex="0">
+                                    <ComboBoxItem Content="Hybrid: Estonia Proxy + DPI Bypass (Recommended)" Tag="Both"/>
+                                    <ComboBoxItem Content="Estonia Proxy Only (All blocked apps &amp; geo-blocks)" Tag="App2Only"/>
+                                    <ComboBoxItem Content="DPI Bypass Only (No IP change)" Tag="App1Only"/>
+                                </ComboBox>
+
+                                <CheckBox x:Name="SystemProxyCheckBox" Content="Automatically set Windows System Proxy (127.0.0.1:10809) when connected" IsChecked="True"/>
+
+                                <TextBlock Text="DPI Bypass Arguments (bin\app1.exe = winws.exe)" FontSize="14" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                <TextBox x:Name="App1ArgumentsTextBox"/>
+
+                                <TextBlock Text="Proxy Core Arguments (bin\app2.exe = xray.exe)" FontSize="14" FontWeight="SemiBold"/>
+                                <TextBox x:Name="App2ArgumentsTextBox"/>
+
+                                <Button Content="Save Settings" HorizontalAlignment="Left" Click="SaveSettingsButton_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Вкладка 2: Эстония и DNS -->
+            <TabItem Header="Estonia &amp; DNS">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="18" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="Free Estonia Subscription URL (GitHub Raw)" FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Text="Automatically fetches, filters EE/Estonia nodes, pings them and picks the fastest one on Connect." Foreground="{StaticResource MutedBrush}" Margin="0,2,0,6"/>
+                                <TextBox x:Name="SubscriptionUrlTextBox"/>
+
+                                <TextBlock Text="OR Paste Manual VLESS Link (Optional - overrides auto-fetch)" FontSize="15" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                                <TextBox x:Name="CustomVlessTextBox" ToolTip="vless://..."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="18">
+                            <StackPanel>
+                                <TextBlock Text="Custom DNS Server" FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Text="Examples: 1.1.1.1 (Cloudflare), 8.8.8.8 (Google), 9.9.9.9 (Quad9)" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,6"/>
+                                <TextBox x:Name="DnsTextBox"/>
+                                <Button Content="Save Network Settings" HorizontalAlignment="Left" Click="SaveSettingsButton_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Вкладка 3: Редактор list-general.txt -->
+            <TabItem Header="Domains (list-general.txt)">
+                <Grid Margin="18">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                        <TextBlock x:Name="ListFilePathText" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"/>
+                        <CheckBox x:Name="SplitTunnelCheckBox" Content="Route ONLY domains in list-general.txt through Estonia (uncheck to route ALL traffic)" IsChecked="False" Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <DockPanel Grid.Row="1" Margin="0,0,0,8">
+                        <Button Content="Add Domain" DockPanel.Dock="Right" Click="AddListLineButton_Click"/>
+                        <TextBox x:Name="ListSearchTextBox" Margin="0,4,8,8" ToolTip="Type domain to search or add (e.g. discord.com)" TextChanged="ListSearchTextBox_TextChanged"/>
+                    </DockPanel>
+
+                    <ListBox x:Name="DomainListBox" Grid.Row="2" SelectionMode="Extended"/>
+
+                    <DockPanel Grid.Row="3" Margin="0,10,0,0">
+                        <TextBlock x:Name="ListCountText" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                            <Button Content="Remove Selected" Click="RemoveListLinesButton_Click"/>
+                            <Button Content="Save Domain List" Background="{StaticResource AccentBrush}" Foreground="#101010" FontWeight="SemiBold" Click="SaveListButton_Click"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
